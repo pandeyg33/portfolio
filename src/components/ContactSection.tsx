@@ -1,3 +1,4 @@
+// src/components/ContactSection.tsx
 "use client";
 
 import {
@@ -52,6 +53,12 @@ export default function ContactSection() {
   // formspree
   const [state, handleSubmit] = useForm("xpwjeokj");
 
+  // Button state machine
+  const isSending = state.submitting;
+  const isSent = state.succeeded;
+  const isDisabled = isSending || isSent;
+  const btnLabel = isSent ? "Sent" : isSending ? "Sending…" : "Send";
+
   // Reusable styles so pills look identical across themes
   const pillBase =
     "rounded-[var(--radius)] border pill-shadow w-full " +
@@ -61,6 +68,18 @@ export default function ContactSection() {
     "placeholder-[color:var(--pill-banana)]/80 " +
     "px-5 py-4 md:py-5 focus:outline-none focus:ring-0";
 
+  // Button variants
+  const btnBase =
+    "rounded-[calc(var(--radius)+4px)] w-full h-full min-h-[140px] " +
+    "font-medium tracking-wide border pill-shadow " +
+    "flex items-center justify-center gap-2 transition-transform will-change-transform";
+  const btnIdle =
+    "bg-[color:var(--pill-banana)] text-[color:var(--pill-ink)] " +
+    "border-[color:var(--pill-banana)]/40 hover:scale-[1.02] active:scale-[0.99]";
+  const btnSent =
+    "bg-[color:var(--card-pastel-red)] text-[color:var(--pill-ink)] " +
+    "border-[color:var(--card-pastel-red)]/40 opacity-90 cursor-not-allowed";
+
   return (
     <section
       id="contact"
@@ -69,7 +88,7 @@ export default function ContactSection() {
     >
       {/* same container width as rest of page */}
       <div className="w-full px-6 md:px-8 lg:px-12">
-        {/* ===== Header pill (unchanged look) ===== */}
+        {/* ===== Header pill ===== */}
         <motion.div
           {...fade(0)}
           whileHover={{ scale: 1.005 }}
@@ -186,7 +205,7 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* rotating ring (unchanged) */}
+          {/* rotating ring */}
           <div className="pointer-events-none absolute -right-6 md:-right-8 -bottom-10 md:-bottom-12">
             <div className="relative h-[110px] w-[110px] md:h-[140px] md:w-[140px]">
               <motion.svg
@@ -234,8 +253,7 @@ export default function ContactSection() {
           </div>
         </motion.div>
 
-        {/* ===== SEGREGATED FORM (separate block) ===== */}
-        {/* ===== Form below (separate from slab) ===== */}
+        {/* ===== Segregated form below ===== */}
         <form
           onSubmit={handleSubmit}
           className="mt-12 md:mt-12 grid grid-cols-12 gap-4 md:gap-5 lg:gap-6 pr-6 md:pr-6 lg:pr-12 pl-6 md:pl-8 lg:pl-12"
@@ -296,54 +314,48 @@ export default function ContactSection() {
             />
           </div>
 
-          {/* Send button — tall banana pill on the right */}
+          {/* Send button — becomes pastel red + disabled after success */}
           <div className="col-span-12 xl:col-span-3 flex">
             <button
               type="submit"
-              disabled={state.submitting}
-              className="
-              rounded-[calc(var(--radius)+4px)]
-              w-full h-full min-h-[140px]
-              bg-[color:var(--pill-banana)]
-              text-[color:var(--pill-ink)]
-              font-medium tracking-wide
-              border border-[color:var(--pill-banana)]/40 pill-shadow
-              flex items-center justify-center gap-2
-              transition-transform will-change-transform
-              hover:scale-[1.02] active:scale-[0.99]
-            "
-              aria-label="Send"
+              disabled={isDisabled}
+              aria-disabled={isDisabled}
+              className={`${btnBase} ${isSent ? btnSent : btnIdle}`}
+              aria-label={btnLabel}
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M22 2L11 13" strokeLinecap="round" />
-                <path
-                  d="M22 2l-7 20-4-9-9-4 20-7z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>Send</span>
+              {!isSent && (
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden
+                >
+                  <path d="M22 2L11 13" strokeLinecap="round" />
+                  <path
+                    d="M22 2l-7 20-4-9-9-4 20-7z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+              <span>{btnLabel}</span>
             </button>
           </div>
         </form>
 
-        {/* Success state */}
+        {/* Success state pill */}
         {state.succeeded && (
           <div
             className="
-            mt-4 rounded-[var(--radius)]
-            border border-[color:var(--pill-banana)]/30
-            bg-[var(--intro-pill-color)]
-            text-[color:var(--pill-banana)]
-            px-5 py-4 pill-shadow ml-18 mr-18
-          "
+              mt-4 rounded-[var(--radius)]
+              border border-[color:var(--pill-banana)]/30
+              bg-[var(--intro-pill-color)]
+              text-[color:var(--pill-banana)]
+              px-5 py-4 pill-shadow ml-18 mr-18
+            "
           >
             Thanks — your message is on its way! ✨
           </div>
