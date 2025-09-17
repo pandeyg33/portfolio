@@ -1,0 +1,410 @@
+/* Tailwind v4 entry point */
+@import "tailwindcss";
+
+/* -------------------------------
+   Design tokens (Tailwind v4 @theme)
+   These compile to CSS variables on :root,
+   and we override them at runtime via .light.
+----------------------------------*/
+@theme {
+  --radius: 32px;
+  --container: 1280px;
+
+  /* Page & text (DARK as default) */
+  --page: #0b0b0e; /* dark background */
+  --text: #f2f3f8; /* light fg on dark */
+  --border-soft: rgba(255, 255, 255, 0.1);
+
+  /* Core palette */
+  --color-bg: #0b0b0b;
+  --color-fg: #f5f5f5;
+  --color-muted: #a1a1aa;
+
+  /* Brand pills / accents — DARK */
+  --pill-blue: #2f2fff;
+  --pill-ink: #141414;
+  --pill-banana: #ffd84d;
+
+  --accent: #b8a8ff; /* lavender */
+  --accent-cyan: #22d3ee; /* cyan */
+
+  --pill-purple: #7e6cff; /* services pill */
+
+  /* Cards — DARK */
+  --card-dark: #0f0f12;
+  --card-white: #f7f7fb; /* soft white */
+  --card-lime: #a3e635;
+  --card-lavender: #b8a8ff;
+  --card-pastel-blue: #cfe5ff;
+  --card-phthalo: #0b3d2e;
+  --card-pastel-red: #ff6961;
+
+  --intro-pill-color: #0f0f12;
+
+  --marquee-straw: #d3dc92; /* straw */
+  --marquee-vanilla: #fdf1a8; /* vanilla */
+  --marquee-melon: #fcab92; /* melon */
+}
+
+/* --------------------------------
+   LIGHT THEME (darker complements)
+   ThemeProvider should set <html class="light"> when active.
+-----------------------------------*/
+.light {
+  /* Page & text */
+  --page: #f7f8fb; /* light background */
+  --text: #0b0b0e; /* dark text */
+  --border-soft: rgba(10, 10, 11, 0.14);
+
+  /* Accents (darker, richer on light) */
+  --accent: #c0b9fc; /* deeper lavender */
+  --accent-cyan: #11a5ce; /* teal-700-ish */
+
+  /* Pills (darker complements on light) */
+  --pill-blue: rgb(45, 143, 255); /* deeper blue for contrast on light */
+  --pill-ink: #0f0f12; /* “ink” becomes white card on light */
+  --pill-banana: #dbb418; /* slightly deeper banana */
+
+  /* Cards on light (use darker tints where it helps contrast) */
+  --card-dark: #ffffff;
+  --card-white: #ffffff;
+  --card-lavender: #9b8cfc; /* darker than very pale */
+  --card-lime: #c5f038; /* slightly deeper than neon */
+  --card-pastel-blue: #6daaff; /* a touch deeper */
+  --card-phthalo: #0f766e; /* teal-ish for readability on light */
+  --card-pastel-red: #ff543a; /* complementary deeper pastel */
+
+  --imgShade: 0.32;
+  --textPaneAlpha: 0.26;
+
+  --intro-pill-color: #000000;
+
+  --marquee-straw: #0f766e; /* deeper straw for light bg */
+  --marquee-vanilla: #dbb418; /* deeper vanilla */
+  --marquee-melon: #ff543a; /* deeper melon */
+}
+
+/* Optional: explicitly mark dark for clarity (root already dark) */
+.dark {
+  /* nothing required — matches @theme defaults */
+}
+
+/* Runtime base tokens not in @theme */
+:root {
+  --font-sans: "Century Gothic", "URW Gothic", "Avenir Next", "Avenir",
+    "Segoe UI", Arial, system-ui, -apple-system, sans-serif;
+  --project-radius: 100px;
+
+  /* Ripple bases (used only by the ripple overlay) */
+  --page-dark: #0b0b0e;
+  --page-light: #f7f8fb;
+
+  --imgShade: 0.18;
+  --textPaneAlpha: 0;
+
+  --intro-pill-bg: var(--intro-pill-color);
+  /* Default ring scale (desktop) */
+  --ring-scale: 1;
+
+  /* Default cursor: hollow circle + small dot (quirky). */
+  --cursor-default: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<path d='M6 6 L22 10 L14 14 L18 22 Z' fill='none' stroke='%23f2f3f8' stroke-width='2'/>\</svg>")
+      4 4,
+    pointer;
+
+  /* Pointer cursor: playful tilted caret */
+  --cursor-pointer: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<circle cx='11' cy='11' r='7.5' fill='none' stroke='%23f2f3f8' stroke-width='2'/>\<circle cx='19.5' cy='19.5' r='2.5' fill='%23f2f3f8'/>\</svg>")
+      6 6,
+    auto;
+}
+
+/* Mobile tweak for curvature */
+@media (max-width: 768px) {
+  :root {
+    --radius: 24px;
+    --ring-scale: 0.9;
+  }
+}
+
+/* -------------------------------
+   Base resets & theming
+----------------------------------*/
+html,
+body {
+  height: 100%;
+  background: var(--page);
+  color: var(--text);
+  /* Color scheme advertises proper native UI colors (scrollbars, inputs) */
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: var(--cursor-default);
+}
+
+html {
+  --cursor-pointer: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<circle cx='11' cy='11' r='7.5' fill='none' stroke='%23f2f3f8' stroke-width='2'/>\<circle cx='19.5' cy='19.5' r='2.5' fill='%23f2f3f8'/>\</svg>")
+      6 6,
+    pointer;
+
+  --cursor-default: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<path d='M6 6 L22 10 L14 14 L18 22 Z' fill='none' stroke='%23f2f3f8' stroke-width='2'/>\</svg>")
+      4 4,
+    auto;
+}
+
+html.light {
+  --cursor-pointer: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<circle cx='11' cy='11' r='7.5' fill='none' stroke='%230a0a0b' stroke-width='2'/>\<circle cx='19.5' cy='19.5' r='2.5' fill='%230a0a0b'/>\</svg>")
+      6 6,
+    pointer;
+
+  --cursor-default: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\<path d='M6 6 L22 10 L14 14 L18 22 Z' fill='none' stroke='%230a0a0b' stroke-width='2'/>\</svg>")
+      4 4,
+    auto;
+}
+
+/* When html has class="light" switch native scheme */
+.light {
+  color-scheme: light;
+}
+
+/* Smooth scroll when allowed */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Media elements responsive by default */
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(120, 120, 255, 0.35);
+  color: #fff;
+}
+
+/* Optional scrollbar polish (Chromium/WebKit) */
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
+}
+
+/* -------------------------------
+   Tailwind v4 custom utilities
+----------------------------------*/
+@utility content-wrap {
+  max-width: var(--container);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem; /* px-6 */
+  padding-right: 1.5rem; /* px-6 */
+}
+@media (min-width: 768px) {
+  .content-wrap {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  } /* md:px-8 */
+}
+
+@utility pill-shadow {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* -------------------------------
+   Marquee helpers
+----------------------------------*/
+@keyframes marquee-slow {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+.marquee-run {
+  white-space: nowrap;
+  animation: marquee-slow 18s linear infinite;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.75rem, 3vw + 1rem, 4.5rem);
+}
+@keyframes marquee-left {
+  from {
+    transform: translateX(var(--start, 0%));
+  }
+  to {
+    transform: translateX(calc(var(--start, 0%) - 50%));
+  }
+}
+@keyframes marquee-right {
+  from {
+    transform: translateX(calc(var(--start, 0%) - 50%));
+  }
+  to {
+    transform: translateX(var(--start, 0%));
+  }
+}
+.marquee-left {
+  animation: marquee-left var(--speed, 26s) linear infinite;
+}
+.marquee-right {
+  animation: marquee-right var(--speed, 26s) linear infinite;
+}
+
+/* Token-to-utility mappers */
+.border-soft {
+  border-color: var(--border-soft);
+}
+.text-accent {
+  color: var(--accent);
+}
+.text-accent-cyan {
+  color: var(--accent-cyan);
+}
+.bg-pill-blue {
+  background: var(--pill-blue);
+}
+
+/* Only surfaces & text should animate on theme change (not every node) */
+@utility theme-fade {
+  transition: background-color 0.28s ease, color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+/* If you want a container to make its *direct* children fade too */
+.theme-fade-children > * {
+  transition: background-color 0.28s ease, color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+/* Optional: a tiny overlay that cross-fades during the swap to hide any hiccups */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: var(--page);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    z-index: 40; /* above content, below your fixed header if any */
+  }
+  html.theme-swapping .theme-overlay {
+    opacity: 0.5;
+  } /* quick veil */
+}
+
+/* Creates an expanding transparent "hole" from a center point using CSS variables */
+.ripple-reveal {
+  -webkit-mask-image: radial-gradient(
+    circle at var(--cx) var(--cy),
+    transparent var(--r),
+    black calc(var(--r) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at var(--cx) var(--cy),
+    transparent var(--r),
+    black calc(var(--r) + 1px)
+  );
+}
+
+/* Mobile-only readability veil (black → transparent, on the RIGHT) */
+.intro-veil {
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.55) 28%,
+    rgba(0, 0, 0, 0.45) 56%,
+    rgba(0, 0, 0, 0) 78%
+  );
+}
+
+/* Don’t force custom cursors on touch devices */
+/* Don’t force custom cursors on touch */
+@media (pointer: coarse) {
+  html,
+  body,
+  a,
+  button,
+  [role="button"],
+  [type="button"],
+  [type="submit"] {
+    cursor: auto !important;
+  }
+}
+
+a,
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+.clickable {
+  cursor: var(--cursor-pointer);
+}
+
+/* Editable fields keep I-beam */
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+.ring-scale {
+  transform: scale(var(--ring-scale, 1));
+  transform-origin: bottom right;
+  will-change: transform;
+}
