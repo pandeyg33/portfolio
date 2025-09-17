@@ -33,24 +33,21 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "skipscout",
-    title: "SkipScout",
+    slug: "interviewmate",
+    title: "InterviewMate",
     blurb:
-      "Chrome extension that extracts YouTube transcripts and runs local LLM summarization & Q&A via Ollama—privacy-first and fast.",
+      "AI-powered interview automation with Whisper STT, HeyGen avatars, and cosine-similarity scoring for explainable feedback.",
     tone: "lavender",
-    icon: CommandLineIcon,
-    stack: ["Chrome MV3", "TypeScript", "Ollama", "LLM", "Vite"],
+    icon: RocketLaunchIcon,
+    stack: ["React", "Node", "MongoDB", "Whisper", "HeyGen"],
     details: {
       overview:
-        "Manifest V3 extension that fetches/scrapes transcripts, summarizes, and answers questions using locally hosted LLMs (Gemma/Qwen) through Ollama—no data leaves your machine.",
+        "End-to-end interview system with real-time transcription, avatar-led prompts, and transparent response scoring.",
       highlights: [
-        "Content scripts + service worker + declarativeNetRequest",
-        "Robust transcript extraction (DOM or timedtext API)",
-        "Summarization & Q&A pipelines with caching and prompts",
-        "Responsive panel UI with FAB & tooltips",
+        "React frontend + Node backend (REST)",
+        "Auth, scheduling, session persistence",
+        "Cosine-similarity scoring with rationales",
       ],
-      results: ["~2–3s local response", "Privacy-first, low latency"],
-      links: { github: "https://github.com/your/skipscout" },
     },
   },
   {
@@ -72,30 +69,13 @@ export const projects: Project[] = [
       links: { github: "https://github.com/your/gan-detector" },
     },
   },
-  {
-    slug: "interviewmate",
-    title: "InterviewMate",
-    blurb:
-      "AI-powered interview automation with Whisper STT, HeyGen avatars, and cosine-similarity scoring for explainable feedback.",
-    tone: "phthalo",
-    icon: RocketLaunchIcon,
-    stack: ["React", "Node", "MongoDB", "Whisper", "HeyGen"],
-    details: {
-      overview:
-        "End-to-end interview system with real-time transcription, avatar-led prompts, and transparent response scoring.",
-      highlights: [
-        "React frontend + Node backend (REST)",
-        "Auth, scheduling, session persistence",
-        "Cosine-similarity scoring with rationales",
-      ],
-    },
-  },
+
   {
     slug: "pv-signal",
     title: "AI PV Reporting",
     blurb:
       "FAERS/MedDRA analytics with PRR/ROR + CIs, dashboards, and LLM insights to surface adverse-event signals.",
-    tone: "lime",
+    tone: "phthalo",
     icon: BeakerIcon,
     stack: ["Python", "DuckDB", "Pandas", "Altair", "Ollama"],
     details: {
@@ -113,7 +93,7 @@ export const projects: Project[] = [
     title: "PharmaAI",
     blurb:
       "Local, privacy-preserving RAG for medication info—Gemma 3 + sentence embeddings; accurate and fast on consumer hardware.",
-    tone: "pastelRed",
+    tone: "lime",
     icon: ChatBubbleLeftRightIcon,
     stack: ["Ollama", "Embeddings", "RAG", "Streamlit", "Docker"],
     details: {
@@ -127,6 +107,27 @@ export const projects: Project[] = [
       results: [
         "92% response accuracy · ~2.8s median latency · 3% hallucination",
       ],
+    },
+  },
+  {
+    slug: "skipscout",
+    title: "SkipScout",
+    blurb:
+      "Chrome extension that extracts YouTube transcripts and runs local LLM summarization & Q&A via Ollama—privacy-first and fast.",
+    tone: "pastelRed",
+    icon: CommandLineIcon,
+    stack: ["Chrome MV3", "TypeScript", "Ollama", "LLM", "Vite"],
+    details: {
+      overview:
+        "Manifest V3 extension that fetches/scrapes transcripts, summarizes, and answers questions using locally hosted LLMs (Gemma/Qwen) through Ollama—no data leaves your machine.",
+      highlights: [
+        "Content scripts + service worker + declarativeNetRequest",
+        "Robust transcript extraction (DOM or timedtext API)",
+        "Summarization & Q&A pipelines with caching and prompts",
+        "Responsive panel UI with FAB & tooltips",
+      ],
+      results: ["~2–3s local response", "Privacy-first, low latency"],
+      links: { github: "https://github.com/your/skipscout" },
     },
   },
   // try "lime" or "lavender" on future items
