@@ -38,7 +38,7 @@ export default function BrandCorner() {
 
   return (
     <Link
-      href="#header"
+      href="/#header"
       aria-label="Home"
       className="
         left-4 top-4 z-50 select-none
